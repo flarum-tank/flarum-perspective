@@ -17,7 +17,8 @@
   "require": {
     "flarum/core": ">=0.1.0-beta.10 <0.1.0-beta.12",
     "flarum/approval": "^0.1.0",
-    "flarum/flags": "^0.1.0-beta.9"
+    "flarum/flags": "^0.1.0-beta.9",
+    "stajor/perspectiveapi": "^1.0"
   },
   "autoload": {
     "psr-4": {
@@ -39,5 +40,6 @@
         "color": "#fff"
       }
     }
-  }
+  },
+  "minimum-stability": "beta"
 }
