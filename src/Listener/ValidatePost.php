@@ -41,6 +41,7 @@ class ValidatePost
         }
         $perspectiveClient = new CommentsClient($this->settings->get('perspective.api_key'));
         $perspectiveClient->comment(['text' => $post->content]);
+        $perspectiveClient->doNotStore($doNotStore);
         $perspectiveClient->requestedAttributes($requestAttributes);
         $response = $perspectiveClient->analyze();
         $scores = array();
