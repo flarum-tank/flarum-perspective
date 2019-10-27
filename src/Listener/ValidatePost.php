@@ -22,7 +22,9 @@ class ValidatePost
         $post = $event->post;
 
         $doNotStore = $this->settings->get('perspective.donotstore');
-
+        if($doNotStore == null) {
+            $doNotStore = false;
+        }
         $requestAttributes = array();
         if ($this->settings->get('perspective.models.toxicity')) {
             $requestAttributes['TOXICITY'] = ['scoreType' => 'PROBABILITY', 'scoreThreshold' => 0];
