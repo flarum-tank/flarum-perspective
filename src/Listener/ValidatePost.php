@@ -25,19 +25,19 @@ class ValidatePost
 
         $requestAttributes = array();
         if ($this->settings->get('perspective.models.toxicity')) {
-            $requestAttributes['TOXICITY'] = ['scoreType' => 'PROBABILITY', 'scoreThreshold' => 0, 'doNotStore' => $doNotStore];
+            $requestAttributes['TOXICITY'] = ['scoreType' => 'PROBABILITY', 'scoreThreshold' => 0];
         }
         if ($this->settings->get('perspective.models.threat')) {
-            $requestAttributes['THREAT'] = ['scoreType' => 'PROBABILITY', 'scoreThreshold' => 0, 'doNotStore' => $doNotStore];
+            $requestAttributes['THREAT'] = ['scoreType' => 'PROBABILITY', 'scoreThreshold' => 0];
         }
         if ($this->settings->get('perspective.models.profanity')) {
-            $requestAttributes['PROFANITY'] = ['scoreType' => 'PROBABILITY', 'scoreThreshold' => 0, 'doNotStore' => $doNotStore];
+            $requestAttributes['PROFANITY'] = ['scoreType' => 'PROBABILITY', 'scoreThreshold' => 0];
         }
         if ($this->settings->get('perspective.models.sexually_explicit')) {
-            $requestAttributes['SEXUALLY_EXPLICIT'] = ['scoreType' => 'PROBABILITY', 'scoreThreshold' => 0, 'doNotStore' => $doNotStore];
+            $requestAttributes['SEXUALLY_EXPLICIT'] = ['scoreType' => 'PROBABILITY', 'scoreThreshold' => 0];
         }
         if ($this->settings->get('perspective.models.flirtation')) {
-            $requestAttributes['FLIRTATION'] = ['scoreType' => 'PROBABILITY', 'scoreThreshold' => 0, 'doNotStore' => $doNotStore];
+            $requestAttributes['FLIRTATION'] = ['scoreType' => 'PROBABILITY', 'scoreThreshold' => 0];
         }
         $perspectiveClient = new CommentsClient($this->settings->get('perspective.api_key'));
         $perspectiveClient->comment(['text' => $post->content]);
