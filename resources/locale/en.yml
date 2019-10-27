@@ -2,6 +2,7 @@ perspective:
   admin:
     settings:
       title: Perspective Settings
+      donotstore: Do Not Store
       field:
         api_key: API Key
         threshold: Flag Threshold

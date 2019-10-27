@@ -56,6 +56,13 @@ export default class PerspectiveSettingsModal extends SettingsModal {
           children: app.translator.trans('perspective.admin.settings.field.flirtation'),
         })),
       ]),
+      m('.Form-group', [
+        m('label', Switch.component({
+          state: this.setting('perspective.donotstore')() > 0,
+          onchange: this.setting('perspective.donotstore'),
+          children: app.translator.trans('perspective.admin.settings.donotstore'),
+        })),
+      ]),
     ]
   }
 }
