@@ -22,7 +22,7 @@ class ValidatePost
         $post = $event->post;
 
         $doNotStore = $this->settings->get('perspective.donotstore');
-        if($doNotStore == null) {
+        if ($doNotStore == null) {
             $doNotStore = false;
         }
         $requestAttributes = array();
@@ -51,8 +51,12 @@ class ValidatePost
             $scores[] = $score['summaryScore']['value'];
         }
         $scores = array_filter($scores);
-        $average = array_sum($scores)/count($scores);
-        $isToxic = $average * 100 >= $this->settings->get('perspective.threshold') ? true : false;
+        if ($this->settings->get('perspective.usemax')) {
+            $score = max($scores);
+        } else {
+            $score = array_sum($scores)/count($scores);
+        }
+        $isToxic = $score * 100 >= $this->settings->get('perspective.threshold') ? true : false;
         if ($isToxic) {
             $post->is_approved = false;
             $post->afterSave(function ($post) {

@@ -63,6 +63,13 @@ export default class PerspectiveSettingsModal extends SettingsModal {
           children: app.translator.trans('perspective.admin.settings.donotstore'),
         })),
       ]),
+      m('.Form-group', [
+        m('label', Switch.component({
+          state: this.setting('perspective.usemax')() > 0,
+          onchange: this.setting('perspective.usemax'),
+          children: app.translator.trans('perspective.admin.settings.usemax'),
+        })),
+      ]),
     ]
   }
 }
