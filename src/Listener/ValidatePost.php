@@ -29,11 +29,20 @@ class ValidatePost
         if ($this->settings->get('perspective.models.toxicity')) {
             $requestAttributes['TOXICITY'] = ['scoreType' => 'PROBABILITY', 'scoreThreshold' => 0];
         }
+        if ($this->settings->get('perspective.models.toxicity') && $this->settings->get('perspective.useexperimental')) {
+            $requestAttributes['TOXICITY_EXPERIMENTAL'] = ['scoreType' => 'PROBABILITY', 'scoreThreshold' => 0];
+        }
         if ($this->settings->get('perspective.models.threat')) {
             $requestAttributes['THREAT'] = ['scoreType' => 'PROBABILITY', 'scoreThreshold' => 0];
         }
+        if ($this->settings->get('perspective.models.threat') && $this->settings->get('perspective.useexperimental')) {
+            $requestAttributes['THREAT_EXPERIMENTAL'] = ['scoreType' => 'PROBABILITY', 'scoreThreshold' => 0];
+        }
         if ($this->settings->get('perspective.models.profanity')) {
             $requestAttributes['PROFANITY'] = ['scoreType' => 'PROBABILITY', 'scoreThreshold' => 0];
+        }
+        if ($this->settings->get('perspective.models.profanity') && $this->settings->get('perspective.useexperimental')) {
+            $requestAttributes['PROFANITY_EXPERIMENTAL'] = ['scoreType' => 'PROBABILITY', 'scoreThreshold' => 0];
         }
         if ($this->settings->get('perspective.models.sexually_explicit')) {
             $requestAttributes['SEXUALLY_EXPLICIT'] = ['scoreType' => 'PROBABILITY', 'scoreThreshold' => 0];

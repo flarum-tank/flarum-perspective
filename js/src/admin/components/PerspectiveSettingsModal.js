@@ -23,6 +23,20 @@ export default class PerspectiveSettingsModal extends SettingsModal {
       ]),
       m('.Form-group', [
         m('label', Switch.component({
+          state: this.setting('perspective.usemax')() > 0,
+          onchange: this.setting('perspective.usemax'),
+          children: app.translator.trans('perspective.admin.settings.usemax'),
+        })),
+      ]),
+      m('.Form-group', [
+        m('label', Switch.component({
+          state: this.setting('perspective.useexperimental')() > 0,
+          onchange: this.setting('perspective.useexperimental'),
+          children: app.translator.trans('perspective.admin.settings.useexperimental'),
+        })),
+      ]),
+      m('.Form-group', [
+        m('label', Switch.component({
           state: this.setting('perspective.models.toxicity')() > 0,
           onchange: this.setting('perspective.models.toxicity'),
           children: app.translator.trans('perspective.admin.settings.field.toxicity'),
@@ -61,13 +75,6 @@ export default class PerspectiveSettingsModal extends SettingsModal {
           state: this.setting('perspective.donotstore')() > 0,
           onchange: this.setting('perspective.donotstore'),
           children: app.translator.trans('perspective.admin.settings.donotstore'),
-        })),
-      ]),
-      m('.Form-group', [
-        m('label', Switch.component({
-          state: this.setting('perspective.usemax')() > 0,
-          onchange: this.setting('perspective.usemax'),
-          children: app.translator.trans('perspective.admin.settings.usemax'),
         })),
       ]),
     ]
