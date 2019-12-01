@@ -1,5 +1,11 @@
 <?php
-
+/**
+ * (c) 2019  Matthew Kilgore <matthew@kilgore.dev>
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ *
+ */
 
 namespace Tank\Perspective\Listener;
 
@@ -7,6 +13,7 @@ namespace Tank\Perspective\Listener;
 use Flarum\Flags\Flag;
 use Flarum\Post\Event\Saving;
 use Flarum\Settings\SettingsRepositoryInterface;
+use Illuminate\Support\Facades\Log;
 use PerspectiveApi\CommentsClient;
 
 class ValidatePost
@@ -26,19 +33,19 @@ class ValidatePost
             $doNotStore = false;
         }
         $requestAttributes = array();
-        if ($this->settings->get('perspective.models.toxicity')) {
+        if ($this->settings->get('perspective.models.toxicity') && !$this->settings->get('perspective.useexperimental')) {
             $requestAttributes['TOXICITY'] = ['scoreType' => 'PROBABILITY', 'scoreThreshold' => 0];
         }
         if ($this->settings->get('perspective.models.toxicity') && $this->settings->get('perspective.useexperimental')) {
             $requestAttributes['TOXICITY_EXPERIMENTAL'] = ['scoreType' => 'PROBABILITY', 'scoreThreshold' => 0];
         }
-        if ($this->settings->get('perspective.models.threat')) {
+        if ($this->settings->get('perspective.models.threat') && !$this->settings->get('perspective.useexperimental')) {
             $requestAttributes['THREAT'] = ['scoreType' => 'PROBABILITY', 'scoreThreshold' => 0];
         }
         if ($this->settings->get('perspective.models.threat') && $this->settings->get('perspective.useexperimental')) {
             $requestAttributes['THREAT_EXPERIMENTAL'] = ['scoreType' => 'PROBABILITY', 'scoreThreshold' => 0];
         }
-        if ($this->settings->get('perspective.models.profanity')) {
+        if ($this->settings->get('perspective.models.profanity') && !$this->settings->get('perspective.useexperimental')) {
             $requestAttributes['PROFANITY'] = ['scoreType' => 'PROBABILITY', 'scoreThreshold' => 0];
         }
         if ($this->settings->get('perspective.models.profanity') && $this->settings->get('perspective.useexperimental')) {
@@ -50,14 +57,18 @@ class ValidatePost
         if ($this->settings->get('perspective.models.flirtation')) {
             $requestAttributes['FLIRTATION'] = ['scoreType' => 'PROBABILITY', 'scoreThreshold' => 0];
         }
-        $perspectiveClient = new CommentsClient($this->settings->get('perspective.api_key'));
-        $perspectiveClient->comment(['text' => $post->content]);
-        $perspectiveClient->doNotStore($doNotStore);
-        $perspectiveClient->requestedAttributes($requestAttributes);
-        $response = $perspectiveClient->analyze();
-        $scores = array();
-        foreach ($response->attributeScores() as $score) {
-            $scores[] = $score['summaryScore']['value'];
+        try {
+            $perspectiveClient = new CommentsClient($this->settings->get('perspective.api_key'));
+            $perspectiveClient->comment(['text' => $post->content]);
+            $perspectiveClient->doNotStore($doNotStore);
+            $perspectiveClient->requestedAttributes($requestAttributes);
+            $response = $perspectiveClient->analyze();
+            $scores = array();
+            foreach ($response->attributeScores() as $score) {
+                $scores[] = $score['summaryScore']['value'];
+            }
+        } catch (\Exception $exception) {
+            Log::error($exception);
         }
         $scores = array_filter($scores);
         if ($this->settings->get('perspective.usemax')) {
@@ -67,13 +78,13 @@ class ValidatePost
         }
         $isToxic = $score * 100 >= $this->settings->get('perspective.threshold') ? true : false;
         if ($isToxic) {
-            $post->is_approved = false;
+            //$post->is_approved = false;
             $post->afterSave(function ($post) {
                 // Do not approve the discussion if only one post
-                if ($post->number == 1) {
-                    $post->discussion->is_approved = false;
-                    $post->discussion->save();
-                }
+                //if ($post->number == 1) {
+                //    $post->discussion->is_approved = false;
+                //    $post->discussion->save();
+                //}
                 // Flag the post/discussion
                 $flag = new Flag();
                 $flag->post_id = $post->id;

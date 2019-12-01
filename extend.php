@@ -1,4 +1,12 @@
 <?php
+/**
+ * (c) 2019  Matthew Kilgore <matthew@kilgore.dev>
+ *
+ *  For the full copyright and license information, please view the LICENSE
+ *  file that was distributed with this source code.
+ *
+ */
+
 use Flarum\Extend;
 use Flarum\Post\Event\Saving;
 use Illuminate\Contracts\Events\Dispatcher;
