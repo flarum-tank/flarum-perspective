@@ -68,7 +68,7 @@ class ValidatePost
                 $scores[] = $score['summaryScore']['value'];
             }
         } catch (\Exception $exception) {
-            Log::error($exception);
+            //
         }
         $scores = array_filter($scores);
         if ($this->settings->get('perspective.usemax')) {
