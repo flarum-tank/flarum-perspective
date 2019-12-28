@@ -13,7 +13,6 @@ namespace Tank\Perspective\Listener;
 use Flarum\Flags\Flag;
 use Flarum\Post\Event\Saving;
 use Flarum\Settings\SettingsRepositoryInterface;
-use Illuminate\Support\Facades\Log;
 use PerspectiveApi\CommentsClient;
 
 class ValidatePost
@@ -25,7 +24,8 @@ class ValidatePost
         $this->settings = $settings;
     }
 
-    public function handle(Saving $event) {
+    public function handle(Saving $event)
+    {
         $post = $event->post;
 
         $doNotStore = $this->settings->get('perspective.donotstore');
@@ -67,31 +67,31 @@ class ValidatePost
             foreach ($response->attributeScores() as $score) {
                 $scores[] = $score['summaryScore']['value'];
             }
+            $scores = array_filter($scores);
+            if ($this->settings->get('perspective.usemax')) {
+                $score = max($scores);
+            } else {
+                $score = array_sum($scores) / count($scores);
+            }
+            $isToxic = $score * 100 >= $this->settings->get('perspective.threshold') ? true : false;
+            if ($isToxic) {
+                //$post->is_approved = false;
+                $post->afterSave(function ($post) {
+                    // Do not approve the discussion if only one post
+                    //if ($post->number == 1) {
+                    //    $post->discussion->is_approved = false;
+                    //    $post->discussion->save();
+                    //}
+                    // Flag the post/discussion
+                    $flag = new Flag();
+                    $flag->post_id = $post->id;
+                    $flag->type = 'perspective';
+                    $flag->created_at = time();
+                    $flag->save();
+                });
+            }
         } catch (\Exception $exception) {
-            //
-        }
-        $scores = array_filter($scores);
-        if ($this->settings->get('perspective.usemax')) {
-            $score = max($scores);
-        } else {
-            $score = array_sum($scores)/count($scores);
-        }
-        $isToxic = $score * 100 >= $this->settings->get('perspective.threshold') ? true : false;
-        if ($isToxic) {
-            //$post->is_approved = false;
-            $post->afterSave(function ($post) {
-                // Do not approve the discussion if only one post
-                //if ($post->number == 1) {
-                //    $post->discussion->is_approved = false;
-                //    $post->discussion->save();
-                //}
-                // Flag the post/discussion
-                $flag = new Flag();
-                $flag->post_id = $post->id;
-                $flag->type = 'perspective';
-                $flag->created_at = time();
-                $flag->save();
-            });
+
         }
     }
 }
