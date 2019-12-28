@@ -91,7 +91,7 @@ class ValidatePost
                 });
             }
         } catch (\Exception $exception) {
-
+            app('log')->error($exception);
         }
     }
 }
