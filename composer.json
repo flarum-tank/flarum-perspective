@@ -15,7 +15,7 @@
     "source": "https://github.com/tankerkiller125/flarum-perspective"
   },
   "require": {
-    "flarum/core": ">=0.1.0-beta.10 <0.1.0-beta.12",
+    "flarum/core": ">=0.1.0-beta.10 <0.1.0-beta.13",
     "flarum/approval": "^0.1.0-beta.8",
     "flarum/flags": "^0.1.0-beta.9",
     "stajor/perspectiveapi": "^1.0"
