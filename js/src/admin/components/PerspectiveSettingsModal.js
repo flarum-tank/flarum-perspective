@@ -18,14 +18,14 @@ export default class PerspectiveSettingsModal extends SettingsModal {
   form() {
     return [
       m('.Form-group', [
-        m('label', app.translator.trans('tank-perspective.admin.settings.field.api_key')),
-        m('input[type=text].FormControl', {
+        m('label[for=perspective-api-key]', app.translator.trans('tank-perspective.admin.settings.field.api_key')),
+        m('input[type=text][id=perspective-api-key].FormControl', {
           bidi: this.setting('perspective.api_key')
         })
       ]),
       m('.Form-group', [
-        m('label', app.translator.trans('tank-perspective.admin.settings.field.threshold')),
-        m('input[type=number][max=100].FormControl', {
+        m('label[for=perspective-threashold]', app.translator.trans('tank-perspective.admin.settings.field.threshold')),
+        m('input[type=number][max=100][id=perspective-threashold].FormControl', {
           bidi: this.setting('perspective.threshold')
         })
       ]),
