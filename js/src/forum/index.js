@@ -18,7 +18,7 @@ app.initializers.add('flarum-perspective', () => {
       const flags = post.flags();
 
       if (flags && flags.some(flag => flag.type() === 'perspective')) {
-        items.get('approve').props.children = app.translator.trans('tank-perspective.forum.post.not_toxic_button');
+        items.get('approve').children = app.translator.trans('tank-perspective.forum.post.not_toxic_button');
       }
     }
   });
