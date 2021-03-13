@@ -9,19 +9,14 @@
 
 use Flarum\Extend;
 use Flarum\Post\Event\Saving;
-use FoF\Components\Extend\AddFofComponents;
-use Illuminate\Contracts\Events\Dispatcher;
 use Tank\Perspective\Listener\ValidatePost;
-use Tank\Perspective\Perspective;
 
 return [
     new AddFofComponents(),
     (new Extend\Frontend('forum'))
-        ->js(__DIR__.'/js/dist/forum.js'),
+        ->js(__DIR__ . '/js/dist/forum.js'),
     (new Extend\Frontend('admin'))
-        ->js(__DIR__.'/js/dist/admin.js'),
+        ->js(__DIR__ . '/js/dist/admin.js'),
     new Extend\Locales(__DIR__ . '/resources/locale'),
-    function (Dispatcher $events) {
-        $events->listen(Saving::class, ValidatePost::class);
-    }
+    (new Extend\Event)->listen(Saving::class, ValidatePost::class)
 ];
