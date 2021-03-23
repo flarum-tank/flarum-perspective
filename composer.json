@@ -19,7 +19,10 @@
         "source": "https://github.com/tankerkiller125/flarum-perspective"
     },
     "funding": [
-        "https://github.com/sponsors/tankerkiller125"
+        {
+            "type": "github",
+            "url": "https://github.com/sponsors/tankerkiller125"
+        }
     ],
     "require": {
         "flarum/core": ">=0.1.0-beta.15",
